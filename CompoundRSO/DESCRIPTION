@@ -1,0 +1,44 @@
+Package: CompoundRSO
+Type: Package
+Title: Response Surface Optimization using a hybrid approach
+Version: 1.0
+Date: 2021-04-16
+Authors@R: c(person("Gautham", "Sunder", role = c("aut", "cre"),
+                     email = "sundergautham@gmail.com"),
+              person("Christopher", "Nachtsheim", role = "aut", email = "nacht001@umn.edu"),
+              person("Thomas", "Albrecht", role = "aut",
+                     email = "thomas.albrecht@bsci.com"))
+Author: Gautham Sunder <sundergautham@gmail.com> [aut, cre],
+        Christopher Nachtsheim <nacht001@umn.edu> [aut],
+        Thomas Albrecht <thomas.albrecht@bsci.com> [aut]
+Maintainer: Gautham Sunder <sunder153@umn.edu>
+Description: The package is useful for Response Surface Optimization applications when the complexity of the response surface is unknown. The package estimates the complexity of the unknown response surface and adopts the appropriate RSO method between classical response surface optimization methods and Bayesian Optimization.
+License: GPL (>= 2)
+Encoding: UTF-8
+RoxygenNote: 7.1.1
+Imports: 
+       Rcpp (>= 1.0.6),
+       doRNG,
+       UniDOE,
+       DiceDesign,
+       Rcpp,
+       RcppArmadillo,
+       EnvStats,
+       gamlr,
+       stringr,
+       reshape2,
+       ggplot2,
+       dplyr,
+       DiceKriging,
+       DiceOptim,
+       MASS,
+       mvtnorm,
+       foreach,
+       doParallel,
+       optimr,
+       knitr
+LinkingTo: Rcpp, RcppArmadillo
+LazyData: true
+VignetteBuilder: knitr
+Depends: 
+    R (>= 2.10)

@@ -1,0 +1,350 @@
+---
+title: CompoundRSO
+author: "Gautham Sunder"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{"CompoundRSO"}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  tidy.opts = list(width.cutoff = 60), tidy = TRUE
+)
+```
+
+
+```{r echo = T}
+library(CompoundRSO)
+library(foreach)
+```
+
+* A synthetic test function is used in the example. The following are the active effects in the simulation example: 
+```{r echo = T}
+true_me=c("X1","X3","X4","X5","X6","X8","X10","X12")
+true_qe=c("X1*X1","X6*X6","X10*X10")
+true_2FI=c("X1*X3","X4*X5","X5*X6","X8*X10","X10*X12")
+print("True ME")
+print(true_me)
+print("True QE")
+print(true_qe)
+print("True 2FI")
+print(true_2FI)
+```
+
+* The synthetic test function used is defined as follows:
+```{r echo = T, results = 'hide'}
+beta_true=c(10.000000, -2.015829, -2.087655, -3.497011,  2.935466,  2.316927,
+            2.557496, 2.748769, -4.373890,  4.002858, -3.344170,  3.612898,
+            4.654000, -2.351801,  4.844210,  4.542584, -2.008677)
+
+lm_12factor=function(x){
+  return(10.000000+ -2.015829*x[1]+ -2.087655*x[3]+ -3.497011*x[4]+  2.935466*x[5]+  2.316927*x[6]+
+           2.557496*x[8]+ 2.748769*x[10]+ -4.373890*x[12]+  4.002858*x[1]*x[3]+ -3.344170*x[4]*x[5]+  3.612898*x[5]*x[6]+
+           4.654000*x[8]*x[10]+ -2.351801*x[10]*x[12]+  4.844210*x[1]*x[1]+  4.542584*x[6]*x[6]+ -2.008677*x[12]*x[12])
+}
+
+y_func=function(x,sd=sd_){
+  return(lm_12factor(x)+rnorm(n=1,mean=0,sd))
+}
+
+print("Location of the optimal solution")
+print("x1=-0.205,x3=1,x4=1,x5=1,x6=-0.65,x8=-1,x10=1,x12=1")
+```
+
+* The number of factors in this example is 12 and the factor sparsity in the experiment is 0.66 with 8 factors active. 
+```{r echo = T, results = 'hide'}
+nfactor=12
+#factor sparsity in the simulation
+sparsity=0.66
+# number of active effects
+nactive=8
+```
+
+* The mean and variance of the function is computed using Monte Carlo sampling. The noise in the simulation is defined such that the signal to noise ratio is 4. 
+```{r echo = T}
+##Example function computations
+e_x=0
+for(i in 1:1e6){
+  x_i=runif(n=nfactor,min=-1,max=1)
+  e_x=e_x+lm_12factor(x_i)
+}
+
+e_x=round(e_x/1e6,4)
+print(e_x)
+
+var_x=0
+for(i in 1:1e6){
+  x_i=runif(n=nfactor,min=-1,max=1)
+  var_x=var_x+(e_x-lm_12factor(x_i))**2
+}
+
+var_x=var_x/1e6
+var_x
+sd=sqrt(var_x)
+print(sd)
+
+#noise level of the test function
+#SN=4
+sd_=0.5
+```
+
+
+#################Start of Stage 1 design#####################
+
+Use a Definitive Screening Design (DSD) with 2 fake factors as starting design. The starting design contains 32 runs with 4 center runs. Once the experiment responses are obtained Jones-Natchtsheim method is used to screen active effects.
+
+*General guideline for choosing the size of the DSD is 2(d+2)+4, where d is the number of factors, 2 fake factors, and 4 center runs. If the number of factors is odd, for example 11, then the size of the DSD is 2(d+3)+4. 
+
+*In effects choose a d factor DSD, if d is even, d+1 factor DSD if d is odd. 
+
+Load the DSD from the package (ensure that the data is a matrix and not a data.frame object):
+```{r echo = T}
+dsd_12factor=CompoundRSO::dsd_12factor
+```
+
+* Rescaling the design matrix: 
+The design matrix should be in the range [-1,1], if the design space belongs to (a,b) rescale the design to [-1,1] use the function "transform_designspace"
+```{r echo = T, eval=FALSE}
+#upper and lower are vectors of length nfactor specifying the upper and lower limits of the design space for each factor 
+upper=rep(b,nfactor)
+lower=rep(a,nfactor)
+dsd_12factor=CompoundRSO::transform_designspace(design_x = dsd_12factor,std=TRUE, lower=lower, upper=upper)
+```
+
+* Standardizing column names: 
+The names of the experimental factors is transformed to a standard notation X1,......Xn using the function "factornames_standardize".
+```{r echo = T, eval=FALSE}
+results_list=CompoundRSO::factornames_standardize(design=dsd_12factor,backtransform = FALSE, colnames_vector = c(), factor_levels = TRUE)
+colnames_vector=results_list$colnames_vector
+dsd_12factor=results_list$design
+```
+
+* Define the names of the experimental factors of interest and the fake factor names in the standard notation X1,......,Xn.
+```{r echo = T}
+candidate_factors=paste0("X",1:nfactor)
+fake_factor_index=c(13,14)
+```
+
+* Define a list of candidate space for each experimental factor in the design. The standard candidate space for each continuous experimental factor is a 21 point sequence in the design space [-1,1]. 
+```{r echo = T}
+C=list("X1"=seq(-1,1,length.out = 21),
+       "X2"=seq(-1,1,length.out = 21),
+       "X3"=seq(-1,1,length.out = 21),
+       "X4"=seq(-1,1,length.out = 21),
+       "X5"=seq(-1,1,length.out = 21),
+       "X6"=seq(-1,1,length.out = 21),
+       "X7"=seq(-1,1,length.out = 21),
+       "X8"=seq(-1,1,length.out = 21),
+       "X9"=seq(-1,1,length.out = 21),
+       "X10"=seq(-1,1,length.out = 21),
+       "X11"=seq(-1,1,length.out = 21),
+       "X12"=seq(-1,1,length.out = 21))
+```
+
+* Define the column names for for a full quadratic design matrix, that is we define all the first-order terms, second-order interaction terms and pure quadratic terms. 
+```{r echo = T}
+se_names=c()
+for(i in 1:(length(candidate_factors)-1)){
+   for(j in (i+1):(length(candidate_factors))){
+     se_names=c(se_names,paste0(candidate_factors[i],"*",candidate_factors[j]))
+   }
+}
+ 
+se_names=c("intercept",candidate_factors,se_names,
+            as.vector(sapply(candidate_factors,FUN=function(x){paste0(x,"*",x)},simplify = TRUE)))
+ 
+print(se_names)
+```
+
+* Define the type of each factor, "cat" for categorical variable and "cont" for continuous variable. At this point the design strategy is implemented only for continuous experimental factors.
+```{r echo = T}
+C_dtype=rep("cont",12)
+```
+
+* Carry out the experiments for the DSD and save the responses in a vector y.
+```{r echo = T}
+y=apply(dsd_12factor[,-fake_factor_index],MARGIN=1, FUN=y_func)
+```
+
+* Carry out model selection for the starting design DSD. The function DSD model selection returns the column names of active main effects, 2FI and QE in te standard notation.
+```{r echo = T,eval=FALSE}
+return_list_stage1=dsd_model_selection(design_matrix=dsd_12factor,fake_factor_index=fake_factor_index,C_dtype=C_dtype,heredity="strong",model_selection_type="LASSO",rm_valruns=c(),y) 
+```
+
+#####################End of Stage 1 design######################
+
+#################Start of Stage 2 design#####################
+
+* Augment the DSD with robust runs, robust designs implemented in this library is a compromise between uniform designs and Bayesian D-optimal designs, and is referred to as the compound uniform designs. The recommended number of robust runs to augment the DSD is approximately 0.6(size of DSD). It is recommended that no factors are dropped in this stage, and hence, heredity="no" be used. "n_starts" and "n_starts_compound" are the number of random starts of the optimization algorithm when constructing the Bayesian D-optimal design and robust design respectively. It is recommended that "n_starts"=100 and "n_starts_compound" is at least 10. Higher values of "n_starts_compound" is preferred, but it comes at the cost of additional compute time.   
+
+```{r echo = T, results = 'hide', eval=FALSE}
+n_starts=100
+n_starts_compound=10
+num_cores=10 #number of cores for parallel processing
+naug=as.integer(0.6*(nrow(dsd_12factor)))
+return_list_stage2=stage2_aug(active_me=return_list_stage1$ME,active_2FI=return_list_stage1$`2FI`,active_qe=return_list_stage1$QE,design_matrix=dsd_12factor,fake_factor_index=fake_factor_index,naug=naug,se_names=se_names,C_dtype=C_dtype,C=C,heredity="no",n_starts=n_starts,n_starts_compound = n_starts_compound,design_aug_type="compound_unif",unif_crit="MD2", U_opt_tresh=0.8, D_opt_tresh=0.8,w_tresh = 0.02,use_w=FALSE, w_candidate=0, rng=c(),num_cores=num_cores)
+```
+ 
+* From the summary of the D-optimal and Uniform efficiency of the compound uniform designs for different weights w, choose the most appropriate design. The recommendation is to choose a design with D-efficiency close to 0.8. Anything higher can bias the designs in favor of a second-order polynomial model and it can affect the ability to detect inadequacy of the second-order approximation. Anything lower, negatively impacts the ability to fit a second-order polynomial model and hence leads to higher false positives of the lack of fit test.
+```{r echo = T, eval=FALSE}
+print(return_list_stage2[[4]])
+des_index=6 
+temp=return_list_stage2[[3]][[des_index]][[1]]
+colnames(temp)=candidate_factors
+aug_x_mat=temp
+temp=return_list_stage2[[3]][[des_index]][[2]]
+colnames(temp)=colnames(return_list_stage2[[1]])
+design_aug=temp
+```
+
+* Carry out the lack-of-fit test for the design chosen in the previous step. If the lack-of-fit test is significant it indicates that the response function is complex and that a second order approximation is inadequate. In this scenario transition to Bayesian Optimization. If the lack of fit test is not significant, it indicates that a second order approximation is sufficient. 
+
+* In the Stage 2 analysis a Gauss-Lasso model is fit (LASSO with AICc for model selection and an OLS model is fit for the identified model). The function "stage2_aug_analysis" returns the lack of fit test results and the model fit. 
+
+* To increase the power of the lack of fit test we recommend augmenting the design with one additional center run. That is having a total of 5 center runs which provides 4 degrees of freedom for estimating pure error.
+```{r echo = T, eval=FALSE}
+#augment the design with one additional center run
+#29:32 are the center runs in the DSD considered in this example
+aug_x_mat=rbind(aug_x_mat[1:32,],aug_x_mat[32,,drop=FALSE],aug_x_mat[33:50,])
+design_aug=rbind(design_aug[1:32,],design_aug[32,,drop=FALSE],design_aug[33:50,])
+#stage 2 analysis fits a LASSO with AICc criterion to the design and responses
+#returns the model and the lack of fit test results 
+y_=c(y,apply(aug_x_mat[33:51,],MARGIN=1,FUN=y_func))
+return_list_stage2_analysis=stage2_aug_analysis(design_matrix=design_aug,y=y_,se_names=se_names,lof_alpha=0.05)
+```
+
+#####################End of Stage 2 design######################
+
+##################Start of Stage 3 design#######################
+
+### Case 1: If the lack-of-fit test is significant, it indicates that the second-order approximation is inadequate. In this case we transition to Bayesian Optimization (BO) methods. For BO we recommend using any of the BO libraries in Python or R. In R our recommendation is DiceOptim.
+
+### Case 2: If the lack-of-fit test is not significant, it indicates that the second-order approximation is adequate. And we recommend using the Adaptive-RSO designs in Stage 3. 
+
+* Case 2: The objective is to construct a compound optimal design between Bayesian D-optimal design and I-optimal design for the model from stage 2. The approach is inspired from exploration-exploitation in Bayesian Optimization. Bayesian D-optimal designs provide better estimates of the model parameters and the I-optimal designs minimize the average variance for the current model in the confidence region of the optimum location.
+
+* The I-optimal designs are constructed on a subregion of the experimental space that contains the confidence region for the location of the optimal response. An approximate confidence region for the optimal region x_star is constructed using Bootstrap sampling approach. 
+
+* The recommended number of runs to augment the Stage 2 design is approximately 0.4(size of DSD).
+
+* An optional step before starting Stage 3 is to drop the factors that are not active either as a main effect, pure quadratic effect, and two factor interactions in the model identified at the end of Stage 3. The factors that are not active might not have any significant  relationship with the response and hence can be dropped. This can help reduce the design space and thus speed up the subsequent augmentation. However, the risk with this approach is that it could lead to inadvertently dropping an active factor due to a Type II error. 
+
+* Additionaly, in this step the second-order effects considered in stage 3 are based on the heredity definition. "Weak" heredity implies that a two factor interaction effect is retained if at least one active main effect from stage 2 analysis is present. "No" heredity implies that all effects are considered. "Strong" heredity implies that a two factor interaction effect is retained only if it is a combination of active main effects from stage 2 analysis.  
+
+```{r echo = T, eval=FALSE}
+#option 1
+#conservative approach: do not drop any factors
+drop_inactive_factors=FALSE
+heredity="no"
+design_aug_up=design_aug
+design_x_up=aug_x_mat
+me_index_daug=1:nfactor
+qe_index_daug=1:nfactor
+two_fi_index_daug=combn(nfactor,2,simplify=FALSE)
+C_=C
+C_dtype_=C_dtype
+se_names_=se_names
+
+#Option 2
+#aggressive approach: drop inactive factors and use weak heredity
+drop_inactive_factors=TRUE
+heredity="weak"
+#returns the updated design matrix with the inactive factors dropped according to a weak heredity criterion  
+return_list_update_terms=update_terms_stage3(drop_inactive_factors=drop_inactive_factors,heredity=heredity,design_matrix=design_aug,design_x=aug_x_mat,beta=return_list_stage2_analysis$beta,se_names=se_names,candidate_factors=candidate_factors,C=C,C_dtype=C_dtype)
+design_aug_up=return_list_update_terms[[1]]
+design_x_up=return_list_update_terms[[2]]
+me_index_daug=return_list_update_terms[[3]]
+qe_index_daug=return_list_update_terms[[4]]
+two_fi_index_daug=return_list_update_terms[[5]]
+C_=return_list_update_terms[[6]]
+C_dtype_=return_list_update_terms[[7]]
+se_names_=return_list_update_terms[[8]]
+```
+
+* Constructing stage 3 Adaptive-RSO designs.
+```{r echo = T, results = 'hide', eval=FALSE}
+naug=as.integer(0.4*nrow(dsd_12factor))
+n_starts=100
+n_starts_compound=100 # at least 100 
+B=2000
+return_list_stage3_cpp=stage3_aug(beta=return_list_stage2_analysis$beta,design_matrix=design_aug_up,design_x=design_x_up,Sigma=return_list_stage2_analysis$Sigma,se_names=se_names_,naug=naug,n_starts=n_starts,n_starts_compound = n_starts_compound,B=B,C_dtype=C_dtype_,C=C_,me_index_daug=me_index_daug,qe_index_daug=qe_index_daug,two_fi_index_daug=two_fi_index_daug, use_cpp=TRUE,D_opt_tresh = 0.8, I_opt_tresh = 0.8, w_tresh = 0.02, rng = c(),num_cores = num_cores)
+
+```
+
+* From the list of compound optimal design for different weights w choose the design that meets the desired design efficiency criterion. A recommended design criterion is choose a design that maximizes I-efficieny design such that the D-efficiency is at least 80%.
+```{r echo = T, eval=FALSE}
+results_table=data.frame("w"=NA,"compound_criteria"=NA,"D_eff"=NA,"I_eff"=NA)
+row=1
+for(j in 1:length(return_list_stage3_cpp[[4]])){
+  results_table[row,1]=names(return_list_stage3_cpp[[4]])[j]
+  results_table[row,2:4]=return_list_stage3_cpp[[4]][[j]][[length(return_list_stage3_cpp[[4]][[j]])]]
+  row=row+1
+}
+print(results_table)
+
+#the specific design chosen 
+w_stage3=c(5)
+```
+
+
+```{r, echo=FALSE, results = 'hide', eval=FALSE}
+y_func=function(x,sd=sd_){
+  x_vec=x[true_me]
+  #print(x_vec)
+  na_index=which(is.na(x_vec))
+  if(length(na_index)>0){
+    print(x_vec)
+    print("True active factor missing, randomly gerenating value of the missing factor")
+    x_vec[na_index]=sample(c(-1,1),size=length(na_index),replace = TRUE)
+    print(x_vec)
+  }
+  x_vec=f_x(x_vec,model_order="non_standard",C_dtype=rep("cont",8),
+            me_index=1:8,
+            qe_index=c(1,5,8),
+            two_fi_index=list(c(1,2),c(3,4),c(4,5),c(6,7),c(7,8)))
+  val=t(matrix(x_vec))%*%matrix(beta_true)
+  return(val+rnorm(n=1,mean=0,sd=sd))
+}
+```
+
+* Fit a regression model for the Stage 3 designs. Stage 3 analysis function takes the design matrix and response as inputs and returns the predicted optimal location, the model fit and the predicted optimal response.
+```{r, eval=FALSE}
+compound_weff=return_list_stage3_cpp[[4]]
+design_x_stage3=compound_weff[[w_stage3]][[1]]
+design_matrix_stage3=compound_weff[[w_stage3]][[2]]
+colnames(design_x_stage3)=names(C_)
+colnames(design_matrix_stage3)=se_names_
+y_stage3=c(y_,apply(design_x_stage3[51:64,],MARGIN=1,FUN=y_func))
+return_list=stage3_analysis(design_matrix=design_matrix_stage3,design_x=design_x_stage3,y=y_stage3,se_names=se_names,C=C,C_dtype=C_dtype)
+x_star_stage3=return_list[[2]]
+beta_stage3=return_list[[1]]
+y_best_stage3=return_list[[3]]
+
+#optional- save the image for later use
+save.image("compoundrso_results.RData")
+```
+ 
+* Transforming the design space from [-1,1] to [a,b] and transforming the factor names. 
+```{r, eval=FALSE}
+#transforming the design space from [-1,1] to [a,b]
+#requires row matrix as an in input
+colnames_xstar=names(x_star_stage3)
+x_star_stage3=matrix(x_star_stage3,nrow=1)
+colnames(x_star_stage3)=colnames_xstar
+x_star_stage3=CompoundRSO::transform_designspace(design_x = x_star_stage3,std=FALSE, lower=lower, upper=upper)
+
+#transforming the factor names
+results_list=CompoundRSO::factornames_standardize(design=x_star_stage3,backtransform = TRUE, colnames_vector = colnames_vector, factor_levels = TRUE)
+colnames_vector=results_list$colnames_vector
+x_star_stage3=results_list$design
+
+#input should be a row matrix with column names as X1,...Xn
+results_list=CompoundRSO::factornames_standardize(design=t(beta_stage3),backtransform = TRUE, colnames_vector = colnames_vector, factor_levels = FALSE)
+colnames_vector=results_list$colnames_vector
+beta_stage3=results_list$design
+```
+
