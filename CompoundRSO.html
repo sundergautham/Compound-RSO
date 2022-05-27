@@ -149,12 +149,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>A synthetic test function is used in the example. The following are the active effects in the simulation example:</li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>true_me<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;X1&quot;</span>,<span class="st">&quot;X3&quot;</span>,<span class="st">&quot;X4&quot;</span>,<span class="st">&quot;X5&quot;</span>,<span class="st">&quot;X6&quot;</span>,<span class="st">&quot;X8&quot;</span>,<span class="st">&quot;X10&quot;</span>,<span class="st">&quot;X12&quot;</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>true_qe<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;X1*X1&quot;</span>,<span class="st">&quot;X6*X6&quot;</span>,<span class="st">&quot;X10*X10&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>true_qe<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;X1*X1&quot;</span>,<span class="st">&quot;X6*X6&quot;</span>,<span class="st">&quot;X12*X12&quot;</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>true_2FI<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;X1*X3&quot;</span>,<span class="st">&quot;X4*X5&quot;</span>,<span class="st">&quot;X5*X6&quot;</span>,<span class="st">&quot;X8*X10&quot;</span>,<span class="st">&quot;X10*X12&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt; [1] &quot;True ME&quot;
 #&gt; [1] &quot;X1&quot;  &quot;X3&quot;  &quot;X4&quot;  &quot;X5&quot;  &quot;X6&quot;  &quot;X8&quot;  &quot;X10&quot; &quot;X12&quot;
 #&gt; [1] &quot;True QE&quot;
-#&gt; [1] &quot;X1*X1&quot;   &quot;X6*X6&quot;   &quot;X10*X10&quot;
+#&gt; [1] &quot;X1*X1&quot;   &quot;X6*X6&quot;   &quot;X12*X12&quot;
 #&gt; [1] &quot;True 2FI&quot;
 #&gt; [1] &quot;X1*X3&quot;   &quot;X4*X5&quot;   &quot;X5*X6&quot;   &quot;X8*X10&quot;  &quot;X10*X12&quot;</code></pre>
 <ul>
@@ -195,7 +195,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>e_x<span class="ot">=</span><span class="fu">round</span>(e_x<span class="sc">/</span><span class="fl">1e6</span>,<span class="dv">4</span>)</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(e_x)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 12.464</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 12.4556</span></span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>var_x<span class="ot">=</span><span class="dv">0</span></span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fl">1e6</span>){</span>
@@ -205,10 +205,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>var_x<span class="ot">=</span>var_x<span class="sc">/</span><span class="fl">1e6</span></span>
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>var_x</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 34.3551</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 34.39405</span></span>
 <span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>sd<span class="ot">=</span><span class="fu">sqrt</span>(var_x)</span>
 <span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(sd)</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 5.861323</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 5.864644</span></span>
 <span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#noise level of the test function</span></span>
 <span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#SN=4</span></span>
