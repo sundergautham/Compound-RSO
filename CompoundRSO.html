@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Gautham Sunder" />
+
+
+<title>CompoundRSO</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">CompoundRSO</h1>
+<h4 class="author">Gautham Sunder</h4>
+
+
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(CompoundRSO)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(foreach)</span></code></pre></div>
+<ul>
+<li>A synthetic test function is used in the example. The following are the active effects in the simulation example:</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>true_me<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;X1&quot;</span>,<span class="st">&quot;X3&quot;</span>,<span class="st">&quot;X4&quot;</span>,<span class="st">&quot;X5&quot;</span>,<span class="st">&quot;X6&quot;</span>,<span class="st">&quot;X8&quot;</span>,<span class="st">&quot;X10&quot;</span>,<span class="st">&quot;X12&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>true_qe<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;X1*X1&quot;</span>,<span class="st">&quot;X6*X6&quot;</span>,<span class="st">&quot;X10*X10&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>true_2FI<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;X1*X3&quot;</span>,<span class="st">&quot;X4*X5&quot;</span>,<span class="st">&quot;X5*X6&quot;</span>,<span class="st">&quot;X8*X10&quot;</span>,<span class="st">&quot;X10*X12&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;True ME&quot;
+#&gt; [1] &quot;X1&quot;  &quot;X3&quot;  &quot;X4&quot;  &quot;X5&quot;  &quot;X6&quot;  &quot;X8&quot;  &quot;X10&quot; &quot;X12&quot;
+#&gt; [1] &quot;True QE&quot;
+#&gt; [1] &quot;X1*X1&quot;   &quot;X6*X6&quot;   &quot;X10*X10&quot;
+#&gt; [1] &quot;True 2FI&quot;
+#&gt; [1] &quot;X1*X3&quot;   &quot;X4*X5&quot;   &quot;X5*X6&quot;   &quot;X8*X10&quot;  &quot;X10*X12&quot;</code></pre>
+<ul>
+<li>The synthetic test function used is defined as follows:</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>beta_true<span class="ot">=</span><span class="fu">c</span>(<span class="fl">10.000000</span>, <span class="sc">-</span><span class="fl">2.015829</span>, <span class="sc">-</span><span class="fl">2.087655</span>, <span class="sc">-</span><span class="fl">3.497011</span>,  <span class="fl">2.935466</span>,  <span class="fl">2.316927</span>,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>            <span class="fl">2.557496</span>, <span class="fl">2.748769</span>, <span class="sc">-</span><span class="fl">4.373890</span>,  <span class="fl">4.002858</span>, <span class="sc">-</span><span class="fl">3.344170</span>,  <span class="fl">3.612898</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>            <span class="fl">4.654000</span>, <span class="sc">-</span><span class="fl">2.351801</span>,  <span class="fl">4.844210</span>,  <span class="fl">4.542584</span>, <span class="sc">-</span><span class="fl">2.008677</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>lm_12factor<span class="ot">=</span><span class="cf">function</span>(x){</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fl">10.000000</span><span class="sc">+</span> <span class="sc">-</span><span class="fl">2.015829</span><span class="sc">*</span>x[<span class="dv">1</span>]<span class="sc">+</span> <span class="sc">-</span><span class="fl">2.087655</span><span class="sc">*</span>x[<span class="dv">3</span>]<span class="sc">+</span> <span class="sc">-</span><span class="fl">3.497011</span><span class="sc">*</span>x[<span class="dv">4</span>]<span class="sc">+</span>  <span class="fl">2.935466</span><span class="sc">*</span>x[<span class="dv">5</span>]<span class="sc">+</span>  <span class="fl">2.316927</span><span class="sc">*</span>x[<span class="dv">6</span>]<span class="sc">+</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>           <span class="fl">2.557496</span><span class="sc">*</span>x[<span class="dv">8</span>]<span class="sc">+</span> <span class="fl">2.748769</span><span class="sc">*</span>x[<span class="dv">10</span>]<span class="sc">+</span> <span class="sc">-</span><span class="fl">4.373890</span><span class="sc">*</span>x[<span class="dv">12</span>]<span class="sc">+</span>  <span class="fl">4.002858</span><span class="sc">*</span>x[<span class="dv">1</span>]<span class="sc">*</span>x[<span class="dv">3</span>]<span class="sc">+</span> <span class="sc">-</span><span class="fl">3.344170</span><span class="sc">*</span>x[<span class="dv">4</span>]<span class="sc">*</span>x[<span class="dv">5</span>]<span class="sc">+</span>  <span class="fl">3.612898</span><span class="sc">*</span>x[<span class="dv">5</span>]<span class="sc">*</span>x[<span class="dv">6</span>]<span class="sc">+</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>           <span class="fl">4.654000</span><span class="sc">*</span>x[<span class="dv">8</span>]<span class="sc">*</span>x[<span class="dv">10</span>]<span class="sc">+</span> <span class="sc">-</span><span class="fl">2.351801</span><span class="sc">*</span>x[<span class="dv">10</span>]<span class="sc">*</span>x[<span class="dv">12</span>]<span class="sc">+</span>  <span class="fl">4.844210</span><span class="sc">*</span>x[<span class="dv">1</span>]<span class="sc">*</span>x[<span class="dv">1</span>]<span class="sc">+</span>  <span class="fl">4.542584</span><span class="sc">*</span>x[<span class="dv">6</span>]<span class="sc">*</span>x[<span class="dv">6</span>]<span class="sc">+</span> <span class="sc">-</span><span class="fl">2.008677</span><span class="sc">*</span>x[<span class="dv">12</span>]<span class="sc">*</span>x[<span class="dv">12</span>])</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>y_func<span class="ot">=</span><span class="cf">function</span>(x,<span class="at">sd=</span>sd_){</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">lm_12factor</span>(x)<span class="sc">+</span><span class="fu">rnorm</span>(<span class="at">n=</span><span class="dv">1</span>,<span class="at">mean=</span><span class="dv">0</span>,sd))</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;Location of the optimal solution&quot;
+#&gt; [1] &quot;x1=-0.205,x3=1,x4=1,x5=1,x6=-0.65,x8=-1,x10=1,x12=1&quot;</code></pre>
+<ul>
+<li>The number of factors in this example is 12 and the factor sparsity in the experiment is 0.66 with 8 factors active.</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>nfactor<span class="ot">=</span><span class="dv">12</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#factor sparsity in the simulation</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>sparsity<span class="ot">=</span><span class="fl">0.66</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># number of active effects</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>nactive<span class="ot">=</span><span class="dv">8</span></span></code></pre></div>
+<ul>
+<li>The mean and variance of the function is computed using Monte Carlo sampling. The noise in the simulation is defined such that the signal to noise ratio is 4.</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">##Example function computations</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>e_x<span class="ot">=</span><span class="dv">0</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fl">1e6</span>){</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  x_i<span class="ot">=</span><span class="fu">runif</span>(<span class="at">n=</span>nfactor,<span class="at">min=</span><span class="sc">-</span><span class="dv">1</span>,<span class="at">max=</span><span class="dv">1</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  e_x<span class="ot">=</span>e_x<span class="sc">+</span><span class="fu">lm_12factor</span>(x_i)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>e_x<span class="ot">=</span><span class="fu">round</span>(e_x<span class="sc">/</span><span class="fl">1e6</span>,<span class="dv">4</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(e_x)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 12.464</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>var_x<span class="ot">=</span><span class="dv">0</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fl">1e6</span>){</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  x_i<span class="ot">=</span><span class="fu">runif</span>(<span class="at">n=</span>nfactor,<span class="at">min=</span><span class="sc">-</span><span class="dv">1</span>,<span class="at">max=</span><span class="dv">1</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  var_x<span class="ot">=</span>var_x<span class="sc">+</span>(e_x<span class="sc">-</span><span class="fu">lm_12factor</span>(x_i))<span class="sc">**</span><span class="dv">2</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>var_x<span class="ot">=</span>var_x<span class="sc">/</span><span class="fl">1e6</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>var_x</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 34.3551</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>sd<span class="ot">=</span><span class="fu">sqrt</span>(var_x)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(sd)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 5.861323</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#noise level of the test function</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#SN=4</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>sd_<span class="ot">=</span><span class="fl">0.5</span></span></code></pre></div>
+<p>#################Start of Stage 1 design#####################</p>
+<p>Use a Definitive Screening Design (DSD) with 2 fake factors as starting design. The starting design contains 32 runs with 4 center runs. Once the experiment responses are obtained Jones-Natchtsheim method is used to screen active effects.</p>
+<p>*General guideline for choosing the size of the DSD is 2(d+2)+4, where d is the number of factors, 2 fake factors, and 4 center runs. If the number of factors is odd, for example 11, then the size of the DSD is 2(d+3)+4.</p>
+<p>*In effects choose a d factor DSD, if d is even, d+1 factor DSD if d is odd.</p>
+<p>Load the DSD from the package (ensure that the data is a matrix and not a data.frame object):</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>dsd_12factor<span class="ot">=</span>CompoundRSO<span class="sc">::</span>dsd_12factor</span></code></pre></div>
+<ul>
+<li>Rescaling the design matrix: The design matrix should be in the range [-1,1], if the design space belongs to (a,b) rescale the design to [-1,1] use the function “transform_designspace”</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#upper and lower are vectors of length nfactor specifying the upper and lower limits of the design space for each factor </span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>upper<span class="ot">=</span><span class="fu">rep</span>(b,nfactor)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>lower<span class="ot">=</span><span class="fu">rep</span>(a,nfactor)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>dsd_12factor<span class="ot">=</span>CompoundRSO<span class="sc">::</span><span class="fu">transform_designspace</span>(<span class="at">design_x =</span> dsd_12factor,<span class="at">std=</span><span class="cn">TRUE</span>, <span class="at">lower=</span>lower, <span class="at">upper=</span>upper)</span></code></pre></div>
+<ul>
+<li>Standardizing column names: The names of the experimental factors is transformed to a standard notation X1,……Xn using the function “factornames_standardize”.</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>results_list<span class="ot">=</span>CompoundRSO<span class="sc">::</span><span class="fu">factornames_standardize</span>(<span class="at">design=</span>dsd_12factor,<span class="at">backtransform =</span> <span class="cn">FALSE</span>, <span class="at">colnames_vector =</span> <span class="fu">c</span>(), <span class="at">factor_levels =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>colnames_vector<span class="ot">=</span>results_list<span class="sc">$</span>colnames_vector</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>dsd_12factor<span class="ot">=</span>results_list<span class="sc">$</span>design</span></code></pre></div>
+<ul>
+<li>Define the names of the experimental factors of interest and the fake factor names in the standard notation X1,……,Xn.</li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>candidate_factors<span class="ot">=</span><span class="fu">paste0</span>(<span class="st">&quot;X&quot;</span>,<span class="dv">1</span><span class="sc">:</span>nfactor)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>fake_factor_index<span class="ot">=</span><span class="fu">c</span>(<span class="dv">13</span>,<span class="dv">14</span>)</span></code></pre></div>
+<ul>
+<li>Define a list of candidate space for each experimental factor in the design. The standard candidate space for each continuous experimental factor is a 21 point sequence in the design space [-1,1].</li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>C<span class="ot">=</span><span class="fu">list</span>(<span class="st">&quot;X1&quot;</span><span class="ot">=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="at">length.out =</span> <span class="dv">21</span>),</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;X2&quot;</span><span class="ot">=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="at">length.out =</span> <span class="dv">21</span>),</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;X3&quot;</span><span class="ot">=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="at">length.out =</span> <span class="dv">21</span>),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;X4&quot;</span><span class="ot">=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="at">length.out =</span> <span class="dv">21</span>),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;X5&quot;</span><span class="ot">=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="at">length.out =</span> <span class="dv">21</span>),</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;X6&quot;</span><span class="ot">=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="at">length.out =</span> <span class="dv">21</span>),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;X7&quot;</span><span class="ot">=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="at">length.out =</span> <span class="dv">21</span>),</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;X8&quot;</span><span class="ot">=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="at">length.out =</span> <span class="dv">21</span>),</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;X9&quot;</span><span class="ot">=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="at">length.out =</span> <span class="dv">21</span>),</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;X10&quot;</span><span class="ot">=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="at">length.out =</span> <span class="dv">21</span>),</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;X11&quot;</span><span class="ot">=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="at">length.out =</span> <span class="dv">21</span>),</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;X12&quot;</span><span class="ot">=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="at">length.out =</span> <span class="dv">21</span>))</span></code></pre></div>
+<ul>
+<li>Define the column names for for a full quadratic design matrix, that is we define all the first-order terms, second-order interaction terms and pure quadratic terms.</li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>se_names<span class="ot">=</span><span class="fu">c</span>()</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">length</span>(candidate_factors)<span class="sc">-</span><span class="dv">1</span>)){</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>   <span class="cf">for</span>(j <span class="cf">in</span> (i<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>(<span class="fu">length</span>(candidate_factors))){</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>     se_names<span class="ot">=</span><span class="fu">c</span>(se_names,<span class="fu">paste0</span>(candidate_factors[i],<span class="st">&quot;*&quot;</span>,candidate_factors[j]))</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>   }</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>se_names<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;intercept&quot;</span>,candidate_factors,se_names,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>            <span class="fu">as.vector</span>(<span class="fu">sapply</span>(candidate_factors,<span class="at">FUN=</span><span class="cf">function</span>(x){<span class="fu">paste0</span>(x,<span class="st">&quot;*&quot;</span>,x)},<span class="at">simplify =</span> <span class="cn">TRUE</span>)))</span></code></pre></div>
+<pre><code>#&gt;  [1] &quot;intercept&quot; &quot;X1&quot;        &quot;X2&quot;        &quot;X3&quot;        &quot;X4&quot;        &quot;X5&quot;       
+#&gt;  [7] &quot;X6&quot;        &quot;X7&quot;        &quot;X8&quot;        &quot;X9&quot;        &quot;X10&quot;       &quot;X11&quot;      
+#&gt; [13] &quot;X12&quot;       &quot;X1*X2&quot;     &quot;X1*X3&quot;     &quot;X1*X4&quot;     &quot;X1*X5&quot;     &quot;X1*X6&quot;    
+#&gt; [19] &quot;X1*X7&quot;     &quot;X1*X8&quot;     &quot;X1*X9&quot;     &quot;X1*X10&quot;    &quot;X1*X11&quot;    &quot;X1*X12&quot;   
+#&gt; [25] &quot;X2*X3&quot;     &quot;X2*X4&quot;     &quot;X2*X5&quot;     &quot;X2*X6&quot;     &quot;X2*X7&quot;     &quot;X2*X8&quot;    
+#&gt; [31] &quot;X2*X9&quot;     &quot;X2*X10&quot;    &quot;X2*X11&quot;    &quot;X2*X12&quot;    &quot;X3*X4&quot;     &quot;X3*X5&quot;    
+#&gt; [37] &quot;X3*X6&quot;     &quot;X3*X7&quot;     &quot;X3*X8&quot;     &quot;X3*X9&quot;     &quot;X3*X10&quot;    &quot;X3*X11&quot;   
+#&gt; [43] &quot;X3*X12&quot;    &quot;X4*X5&quot;     &quot;X4*X6&quot;     &quot;X4*X7&quot;     &quot;X4*X8&quot;     &quot;X4*X9&quot;    
+#&gt; [49] &quot;X4*X10&quot;    &quot;X4*X11&quot;    &quot;X4*X12&quot;    &quot;X5*X6&quot;     &quot;X5*X7&quot;     &quot;X5*X8&quot;    
+#&gt; [55] &quot;X5*X9&quot;     &quot;X5*X10&quot;    &quot;X5*X11&quot;    &quot;X5*X12&quot;    &quot;X6*X7&quot;     &quot;X6*X8&quot;    
+#&gt; [61] &quot;X6*X9&quot;     &quot;X6*X10&quot;    &quot;X6*X11&quot;    &quot;X6*X12&quot;    &quot;X7*X8&quot;     &quot;X7*X9&quot;    
+#&gt; [67] &quot;X7*X10&quot;    &quot;X7*X11&quot;    &quot;X7*X12&quot;    &quot;X8*X9&quot;     &quot;X8*X10&quot;    &quot;X8*X11&quot;   
+#&gt; [73] &quot;X8*X12&quot;    &quot;X9*X10&quot;    &quot;X9*X11&quot;    &quot;X9*X12&quot;    &quot;X10*X11&quot;   &quot;X10*X12&quot;  
+#&gt; [79] &quot;X11*X12&quot;   &quot;X1*X1&quot;     &quot;X2*X2&quot;     &quot;X3*X3&quot;     &quot;X4*X4&quot;     &quot;X5*X5&quot;    
+#&gt; [85] &quot;X6*X6&quot;     &quot;X7*X7&quot;     &quot;X8*X8&quot;     &quot;X9*X9&quot;     &quot;X10*X10&quot;   &quot;X11*X11&quot;  
+#&gt; [91] &quot;X12*X12&quot;</code></pre>
+<ul>
+<li>Define the type of each factor, “cat” for categorical variable and “cont” for continuous variable. At this point the design strategy is implemented only for continuous experimental factors.</li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>C_dtype<span class="ot">=</span><span class="fu">rep</span>(<span class="st">&quot;cont&quot;</span>,<span class="dv">12</span>)</span></code></pre></div>
+<ul>
+<li>Carry out the experiments for the DSD and save the responses in a vector y.</li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>y<span class="ot">=</span><span class="fu">apply</span>(dsd_12factor[,<span class="sc">-</span>fake_factor_index],<span class="at">MARGIN=</span><span class="dv">1</span>, <span class="at">FUN=</span>y_func)</span></code></pre></div>
+<ul>
+<li>Carry out model selection for the starting design DSD. The function DSD model selection returns the column names of active main effects, 2FI and QE in the standard notation.</li>
+</ul>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>return_list_stage1<span class="ot">=</span><span class="fu">dsd_model_selection</span>(<span class="at">design_matrix=</span>dsd_12factor,<span class="at">fake_factor_index=</span>fake_factor_index,<span class="at">C_dtype=</span>C_dtype,<span class="at">heredity=</span><span class="st">&quot;strong&quot;</span>,<span class="at">model_selection_type=</span><span class="st">&quot;LASSO&quot;</span>,<span class="at">rm_valruns=</span><span class="fu">c</span>(),y) </span></code></pre></div>
+<p>An example of the output from the dsd model selection for the lm12factor function.</p>
+<pre><code>#&gt; $ME
+#&gt; [1] &quot;X1&quot;  &quot;X3&quot;  &quot;X4&quot;  &quot;X5&quot;  &quot;X6&quot;  &quot;X8&quot;  &quot;X9&quot;  &quot;X10&quot; &quot;X12&quot;
+#&gt; 
+#&gt; $`2FI`
+#&gt; [1] &quot;X1*X6&quot;  &quot;X1*X12&quot; &quot;X3*X8&quot;  &quot;X3*X10&quot; &quot;X4*X5&quot;  &quot;X4*X6&quot;  &quot;X4*X8&quot;  &quot;X4*X12&quot;
+#&gt; [9] &quot;X8*X10&quot;
+#&gt; 
+#&gt; $QE
+#&gt; [1] &quot;X1*X1&quot; &quot;X4*X4&quot;</code></pre>
+<p>#####################End of Stage 1 design######################</p>
+<p>#################Start of Stage 2 design#####################</p>
+<ul>
+<li>Augment the DSD with robust runs, robust designs implemented in this library is a compromise between uniform designs and Bayesian D-optimal designs, and is referred to as the compound uniform designs. The recommended number of robust runs to augment the DSD is approximately 0.6(size of DSD). It is recommended that no factors are dropped in this stage, and hence, heredity=“no” be used. “n_starts” and “n_starts_compound” are the number of random starts of the optimization algorithm when constructing the Bayesian D-optimal design and robust design respectively. It is recommended that “n_starts”=100 and “n_starts_compound” is at least 10. Higher values of “n_starts_compound” is preferred, but it comes at the cost of additional compute time.</li>
+</ul>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>n_starts<span class="ot">=</span><span class="dv">100</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>n_starts_compound<span class="ot">=</span><span class="dv">10</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>num_cores<span class="ot">=</span><span class="dv">10</span> <span class="co">#number of cores for parallel processing</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>naug<span class="ot">=</span><span class="fu">as.integer</span>(<span class="fl">0.6</span><span class="sc">*</span>(<span class="fu">nrow</span>(dsd_12factor)))</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>return_list_stage2<span class="ot">=</span><span class="fu">stage2_aug</span>(<span class="at">active_me=</span>return_list_stage1<span class="sc">$</span>ME,<span class="at">active_2FI=</span>return_list_stage1<span class="sc">$</span><span class="st">`</span><span class="at">2FI</span><span class="st">`</span>,<span class="at">active_qe=</span>return_list_stage1<span class="sc">$</span>QE,<span class="at">design_matrix=</span>dsd_12factor,<span class="at">fake_factor_index=</span>fake_factor_index,<span class="at">naug=</span>naug,<span class="at">se_names=</span>se_names,<span class="at">C_dtype=</span>C_dtype,<span class="at">C=</span>C,<span class="at">heredity=</span><span class="st">&quot;no&quot;</span>,<span class="at">n_starts=</span>n_starts,<span class="at">n_starts_compound =</span> n_starts_compound,<span class="at">design_aug_type=</span><span class="st">&quot;compound_unif&quot;</span>,<span class="at">unif_crit=</span><span class="st">&quot;MD2&quot;</span>, <span class="at">U_opt_tresh=</span><span class="fl">0.8</span>, <span class="at">D_opt_tresh=</span><span class="fl">0.8</span>,<span class="at">w_tresh =</span> <span class="fl">0.02</span>,<span class="at">use_w=</span><span class="cn">FALSE</span>, <span class="at">w_candidate=</span><span class="dv">0</span>, <span class="at">rng=</span><span class="fu">c</span>(),<span class="at">num_cores=</span>num_cores)</span></code></pre></div>
+<ul>
+<li>From the summary of the D-optimal and Uniform efficiency of the compound uniform designs for different weights w, choose the most appropriate design. The recommendation is to choose a design with D-efficiency close to 0.8. Anything higher can bias the designs in favor of a second-order polynomial model and it can affect the ability to detect inadequacy of the second-order approximation. Anything lower, negatively impacts the ability to fit a second-order polynomial model and hence leads to higher false positives of the lack of fit test.</li>
+</ul>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(return_list_stage2[[<span class="dv">4</span>]])</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>des_index<span class="ot">=</span><span class="dv">6</span> </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>temp<span class="ot">=</span>return_list_stage2[[<span class="dv">3</span>]][[des_index]][[<span class="dv">1</span>]]</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(temp)<span class="ot">=</span>candidate_factors</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>aug_x_mat<span class="ot">=</span>temp</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>temp<span class="ot">=</span>return_list_stage2[[<span class="dv">3</span>]][[des_index]][[<span class="dv">2</span>]]</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(temp)<span class="ot">=</span><span class="fu">colnames</span>(return_list_stage2[[<span class="dv">1</span>]])</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>design_aug<span class="ot">=</span>temp</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;Design efficiency table for robust augment&quot;
+#&gt;          w w_criteria     D_eff      U_eff
+#&gt; 1      0.5  0.6013095 0.9873803 0.21523879
+#&gt; 2     0.25  0.4279601 0.7637904 0.31601669
+#&gt; 3    0.375  0.5061618 0.9738608 0.22554249
+#&gt; 4   0.3125  0.4622900 0.8878401 0.26885805
+#&gt; 5  0.28125  0.4435903 0.8394049 0.28870634
+#&gt; 6 0.265625  0.4362719 0.7866137 0.30955252
+#&gt; 7        0  0.3536612 0.4910732 0.35366125
+#&gt; 8        1  1.0000000 1.0000000 0.09491337</code></pre>
+<ul>
+<li><p>Carry out the lack-of-fit test for the design chosen in the previous step. If the lack-of-fit test is significant it indicates that the response function is complex and that a second order approximation is inadequate. In this scenario transition to Bayesian Optimization. If the lack of fit test is not significant, it indicates that a second order approximation is sufficient.</p></li>
+<li><p>In the Stage 2 analysis a Gauss-Lasso model is fit (LASSO with AICc for model selection and an OLS model is fit for the identified model). The function “stage2_aug_analysis” returns the lack of fit test results and the model fit.</p></li>
+<li><p>To increase the power of the lack of fit test we recommend augmenting the design with one additional center run. That is having a total of 5 center runs which provides 4 degrees of freedom for estimating pure error.</p></li>
+</ul>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#augment the design with one additional center run</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co">#29:32 are the center runs in the DSD considered in this example</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>aug_x_mat<span class="ot">=</span><span class="fu">rbind</span>(aug_x_mat[<span class="dv">1</span><span class="sc">:</span><span class="dv">32</span>,],aug_x_mat[<span class="dv">32</span>,,<span class="at">drop=</span><span class="cn">FALSE</span>],aug_x_mat[<span class="dv">33</span><span class="sc">:</span><span class="dv">50</span>,])</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>design_aug<span class="ot">=</span><span class="fu">rbind</span>(design_aug[<span class="dv">1</span><span class="sc">:</span><span class="dv">32</span>,],design_aug[<span class="dv">32</span>,,<span class="at">drop=</span><span class="cn">FALSE</span>],design_aug[<span class="dv">33</span><span class="sc">:</span><span class="dv">50</span>,])</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co">#stage 2 analysis fits a LASSO with AICc criterion to the design and responses</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co">#returns the model and the lack of fit test results </span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>y_<span class="ot">=</span><span class="fu">c</span>(y,<span class="fu">apply</span>(aug_x_mat[<span class="dv">33</span><span class="sc">:</span><span class="dv">51</span>,],<span class="at">MARGIN=</span><span class="dv">1</span>,<span class="at">FUN=</span>y_func))</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>return_list_stage2_analysis<span class="ot">=</span><span class="fu">stage2_aug_analysis</span>(<span class="at">design_matrix=</span>design_aug,<span class="at">y=</span>y_,<span class="at">se_names=</span>se_names,<span class="at">lof_alpha=</span><span class="fl">0.05</span>)</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;coefficient of the second-order linear model&quot;
+#&gt;   intercept          X1          X3          X4          X5          X6 
+#&gt;  9.77969439 -1.82331969 -1.94248668 -3.45922079  3.02222403  2.45059773 
+#&gt;          X8         X10         X12       X1*X3       X1*X6      X1*X12 
+#&gt;  2.34281723  2.81711743 -4.31575754  2.07808000  0.08919334  0.45819401 
+#&gt;       X2*X9       X4*X5       X4*X9       X5*X6       X5*X7      X5*X12 
+#&gt; -0.06933474 -2.39260956  0.55935084  3.25851412 -1.32350336 -0.08903501 
+#&gt;       X6*X8      X6*X11       X7*X9      X8*X10      X9*X11     X10*X11 
+#&gt;  0.92271779 -0.40424665 -0.51220879  4.84953297  0.76247599 -0.62027425 
+#&gt;     X10*X12       X1*X1       X6*X6       X8*X8 
+#&gt; -2.47669016  4.63783936  3.16549657 -0.24530899
+#&gt; [1] &quot;F_stat_lof and F_crit_lof&quot;
+#&gt; [1] &quot;1.42143858768445 8.66699025358696&quot;
+#&gt; [1] &quot;Since the F statistic value is less than the F critical value, the second-order approximation is appropriate&quot;</code></pre>
+<p>#####################End of Stage 2 design######################</p>
+<p>##################Start of Stage 3 design#######################</p>
+<div id="case-1-if-the-lack-of-fit-test-is-significant-it-indicates-that-the-second-order-approximation-is-inadequate.-in-this-case-we-transition-to-bayesian-optimization-bo-methods.-for-bo-we-recommend-using-any-of-the-bo-libraries-in-python-or-r.-in-r-our-recommendation-is-diceoptim." class="section level3">
+<h3>Case 1: If the lack-of-fit test is significant, it indicates that the second-order approximation is inadequate. In this case we transition to Bayesian Optimization (BO) methods. For BO we recommend using any of the BO libraries in Python or R. In R our recommendation is DiceOptim.</h3>
+</div>
+<div id="case-2-if-the-lack-of-fit-test-is-not-significant-it-indicates-that-the-second-order-approximation-is-adequate.-and-we-recommend-using-the-adaptive-rso-designs-in-stage-3." class="section level3">
+<h3>Case 2: If the lack-of-fit test is not significant, it indicates that the second-order approximation is adequate. And we recommend using the Adaptive-RSO designs in Stage 3.</h3>
+<ul>
+<li><p>Case 2: The objective is to construct a compound optimal design between Bayesian D-optimal design and I-optimal design for the model from stage 2. The approach is inspired from exploration-exploitation in Bayesian Optimization. Bayesian D-optimal designs provide better estimates of the model parameters and the I-optimal designs minimize the average variance for the current model in the confidence region of the optimum location.</p></li>
+<li><p>The I-optimal designs are constructed on a subregion of the experimental space that contains the confidence region for the location of the optimal response. An approximate confidence region for the optimal region x_star is constructed using Bootstrap sampling approach.</p></li>
+<li><p>The recommended number of runs to augment the Stage 2 design is approximately 0.4(size of DSD).</p></li>
+<li><p>An optional step before starting Stage 3 is to drop the factors that are not active either as a main effect, pure quadratic effect, and two factor interactions in the model identified at the end of Stage 3. The factors that are not active might not have any significant relationship with the response and hence can be dropped. This can help reduce the design space and thus speed up the subsequent augmentation. However, the risk with this approach is that it could lead to inadvertently dropping an active factor due to a Type II error.</p></li>
+<li><p>Additionaly, in this step the second-order effects considered in stage 3 are based on the heredity definition. “Weak” heredity implies that a two factor interaction effect is retained if at least one active main effect from stage 2 analysis is present. “No” heredity implies that all effects are considered. “Strong” heredity implies that a two factor interaction effect is retained only if it is a combination of active main effects from stage 2 analysis.</p></li>
+</ul>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#option 1</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co">#conservative approach: do not drop any factors</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>drop_inactive_factors<span class="ot">=</span><span class="cn">FALSE</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>heredity<span class="ot">=</span><span class="st">&quot;no&quot;</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>design_aug_up<span class="ot">=</span>design_aug</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>design_x_up<span class="ot">=</span>aug_x_mat</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>me_index_daug<span class="ot">=</span><span class="dv">1</span><span class="sc">:</span>nfactor</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>qe_index_daug<span class="ot">=</span><span class="dv">1</span><span class="sc">:</span>nfactor</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>two_fi_index_daug<span class="ot">=</span><span class="fu">combn</span>(nfactor,<span class="dv">2</span>,<span class="at">simplify=</span><span class="cn">FALSE</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>C_<span class="ot">=</span>C</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>C_dtype_<span class="ot">=</span>C_dtype</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>se_names_<span class="ot">=</span>se_names</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Option 2</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="co">#aggressive approach: drop inactive factors and use weak heredity</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>drop_inactive_factors<span class="ot">=</span><span class="cn">TRUE</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>heredity<span class="ot">=</span><span class="st">&quot;weak&quot;</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="co">#returns the updated design matrix with the inactive factors dropped according to a weak heredity criterion  </span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>return_list_update_terms<span class="ot">=</span><span class="fu">update_terms_stage3</span>(<span class="at">drop_inactive_factors=</span>drop_inactive_factors,<span class="at">heredity=</span>heredity,<span class="at">design_matrix=</span>design_aug,<span class="at">design_x=</span>aug_x_mat,<span class="at">beta=</span>return_list_stage2_analysis<span class="sc">$</span>beta,<span class="at">se_names=</span>se_names,<span class="at">candidate_factors=</span>candidate_factors,<span class="at">C=</span>C,<span class="at">C_dtype=</span>C_dtype)</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>design_aug_up<span class="ot">=</span>return_list_update_terms[[<span class="dv">1</span>]]</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>design_x_up<span class="ot">=</span>return_list_update_terms[[<span class="dv">2</span>]]</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>me_index_daug<span class="ot">=</span>return_list_update_terms[[<span class="dv">3</span>]]</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>qe_index_daug<span class="ot">=</span>return_list_update_terms[[<span class="dv">4</span>]]</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>two_fi_index_daug<span class="ot">=</span>return_list_update_terms[[<span class="dv">5</span>]]</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>C_<span class="ot">=</span>return_list_update_terms[[<span class="dv">6</span>]]</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>C_dtype_<span class="ot">=</span>return_list_update_terms[[<span class="dv">7</span>]]</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>se_names_<span class="ot">=</span>return_list_update_terms[[<span class="dv">8</span>]]</span></code></pre></div>
+<ul>
+<li>Constructing stage 3 Adaptive-RSO designs.</li>
+</ul>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>naug<span class="ot">=</span><span class="fu">as.integer</span>(<span class="fl">0.4</span><span class="sc">*</span><span class="fu">nrow</span>(dsd_12factor))</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>n_starts<span class="ot">=</span><span class="dv">100</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>n_starts_compound<span class="ot">=</span><span class="dv">100</span> <span class="co"># at least 100 </span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>B<span class="ot">=</span><span class="dv">2000</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>return_list_stage3_cpp<span class="ot">=</span><span class="fu">stage3_aug</span>(<span class="at">beta=</span>return_list_stage2_analysis<span class="sc">$</span>beta,<span class="at">design_matrix=</span>design_aug_up,<span class="at">design_x=</span>design_x_up,<span class="at">Sigma=</span>return_list_stage2_analysis<span class="sc">$</span>Sigma,<span class="at">se_names=</span>se_names_,<span class="at">naug=</span>naug,<span class="at">n_starts=</span>n_starts,<span class="at">n_starts_compound =</span> n_starts_compound,<span class="at">B=</span>B,<span class="at">C_dtype=</span>C_dtype_,<span class="at">C=</span>C_,<span class="at">me_index_daug=</span>me_index_daug,<span class="at">qe_index_daug=</span>qe_index_daug,<span class="at">two_fi_index_daug=</span>two_fi_index_daug, <span class="at">use_cpp=</span><span class="cn">TRUE</span>,<span class="at">D_opt_tresh =</span> <span class="fl">0.8</span>, <span class="at">I_opt_tresh =</span> <span class="fl">0.8</span>, <span class="at">w_tresh =</span> <span class="fl">0.02</span>, <span class="at">rng =</span> <span class="fu">c</span>(),<span class="at">num_cores =</span> num_cores)</span></code></pre></div>
+<ul>
+<li>From the list of compound optimal design for different weights w choose the design that meets the desired design efficiency criterion. A recommended design criterion is choose a design that maximizes I-efficieny design such that the D-efficiency is at least 80%.</li>
+</ul>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>results_table<span class="ot">=</span><span class="fu">data.frame</span>(<span class="st">&quot;w&quot;</span><span class="ot">=</span><span class="cn">NA</span>,<span class="st">&quot;compound_criteria&quot;</span><span class="ot">=</span><span class="cn">NA</span>,<span class="st">&quot;D_eff&quot;</span><span class="ot">=</span><span class="cn">NA</span>,<span class="st">&quot;I_eff&quot;</span><span class="ot">=</span><span class="cn">NA</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>row<span class="ot">=</span><span class="dv">1</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(return_list_stage3_cpp[[<span class="dv">4</span>]])){</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  results_table[row,<span class="dv">1</span>]<span class="ot">=</span><span class="fu">names</span>(return_list_stage3_cpp[[<span class="dv">4</span>]])[j]</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  results_table[row,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]<span class="ot">=</span>return_list_stage3_cpp[[<span class="dv">4</span>]][[j]][[<span class="fu">length</span>(return_list_stage3_cpp[[<span class="dv">4</span>]][[j]])]]</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  row<span class="ot">=</span>row<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(results_table)</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co">#the specific design chosen </span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>w_stage3<span class="ot">=</span><span class="fu">c</span>(<span class="dv">5</span>)</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;Design efficiency table for Adaptive-RSO&quot;
+#&gt;       w compound_criteria     D_eff     I_eff
+#&gt; 1   0.5         0.7871958 0.8766217 0.6977700
+#&gt; 2  0.25         0.8264068 0.7564920 0.8497117
+#&gt; 3 0.375         0.7962409 0.7944355 0.7973242
+#&gt; 4   0.1         0.8429219 0.6481739 0.8645606
+#&gt; 5   0.3         0.8064645 0.8114867 0.8043122
+#&gt; 6   0.2         0.8041946 0.7659417 0.8137578
+#&gt; 7 0.275         0.8233915 0.7953585 0.8340247
+#&gt; 8     1         1.0000000 1.0000000 0.1385607</code></pre>
+<ul>
+<li>Fit a regression model for the Stage 3 designs. Stage 3 analysis function takes the design matrix and response as inputs and returns the predicted optimal location, the model fit and the predicted optimal response.</li>
+</ul>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>compound_weff<span class="ot">=</span>return_list_stage3_cpp[[<span class="dv">4</span>]]</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>design_x_stage3<span class="ot">=</span>compound_weff[[w_stage3]][[<span class="dv">1</span>]]</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>design_matrix_stage3<span class="ot">=</span>compound_weff[[w_stage3]][[<span class="dv">2</span>]]</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(design_x_stage3)<span class="ot">=</span><span class="fu">names</span>(C_)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(design_matrix_stage3)<span class="ot">=</span>se_names_</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>y_stage3<span class="ot">=</span><span class="fu">c</span>(y_,<span class="fu">apply</span>(design_x_stage3[<span class="dv">51</span><span class="sc">:</span><span class="dv">64</span>,],<span class="at">MARGIN=</span><span class="dv">1</span>,<span class="at">FUN=</span>y_func))</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>return_list<span class="ot">=</span><span class="fu">stage3_analysis</span>(<span class="at">design_matrix=</span>design_matrix_stage3,<span class="at">design_x=</span>design_x_stage3,<span class="at">y=</span>y_stage3,<span class="at">se_names=</span>se_names,<span class="at">C=</span>C,<span class="at">C_dtype=</span>C_dtype)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>x_star_stage3<span class="ot">=</span>return_list[[<span class="dv">2</span>]]</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>beta_stage3<span class="ot">=</span>return_list[[<span class="dv">1</span>]]</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>y_best_stage3<span class="ot">=</span>return_list[[<span class="dv">3</span>]]</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="co">#optional- save the image for later use</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="fu">save.image</span>(<span class="st">&quot;compoundrso_results.RData&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;The optimal identified using the Compound-RSO strategy&quot;
+#&gt;         X1         X2         X3         X4         X5         X6         X7 
+#&gt; -0.1862951  0.2000000  1.0000000  1.0000000  1.0000000 -0.7015326  1.0000000 
+#&gt;         X8         X9        X10        X11        X12 
+#&gt; -1.0000000 -1.0000000  1.0000000 -0.5000000  1.0000000
+#&gt; [1] &quot;Location of the optimal solution&quot;
+#&gt; [1] &quot;x1=-0.205,x3=1,x4=1,x5=1,x6=-0.65,x8=-1,x10=1,x12=1&quot;
+#&gt; [1] &quot;Predicted optimal solution using Compound-RSO for the active factors&quot;
+#&gt; [1] &quot;x1=-0.186,x3=1,x4=1,x5=1,x6=-0.701 ,x8=-1,x10=1,x12=1&quot;
+#&gt; [1] &quot;The coefficients of the model identified&quot;
+#&gt;                  [,1]
+#&gt; intercept 10.03223413
+#&gt; X1        -1.90823079
+#&gt; X3        -2.03260224
+#&gt; X4        -3.44431762
+#&gt; X5         2.95176208
+#&gt; X6         2.36639983
+#&gt; X8         2.43627908
+#&gt; X10        2.71472566
+#&gt; X12       -4.28870550
+#&gt; X1*X3      3.64247276
+#&gt; X3*X9      0.15267099
+#&gt; X4*X5     -3.22697702
+#&gt; X4*X6     -0.05613248
+#&gt; X4*X8     -0.14067900
+#&gt; X4*X10    -0.03363398
+#&gt; X5*X6      3.50942981
+#&gt; X5*X7     -0.13106999
+#&gt; X8*X10     4.75837873
+#&gt; X9*X12     0.19191051
+#&gt; X10*X12   -2.38743605
+#&gt; X1*X1      4.65455583
+#&gt; X6*X6      4.14784528
+#&gt; X12*X12   -1.49979437</code></pre>
+<ul>
+<li>Transforming the design space from [-1,1] to [a,b] and transforming the factor names.</li>
+</ul>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#transforming the design space from [-1,1] to [a,b]</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co">#requires row matrix as an in input</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>colnames_xstar<span class="ot">=</span><span class="fu">names</span>(x_star_stage3)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>x_star_stage3<span class="ot">=</span><span class="fu">matrix</span>(x_star_stage3,<span class="at">nrow=</span><span class="dv">1</span>)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(x_star_stage3)<span class="ot">=</span>colnames_xstar</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>x_star_stage3<span class="ot">=</span>CompoundRSO<span class="sc">::</span><span class="fu">transform_designspace</span>(<span class="at">design_x =</span> x_star_stage3,<span class="at">std=</span><span class="cn">FALSE</span>, <span class="at">lower=</span>lower, <span class="at">upper=</span>upper)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="co">#transforming the factor names</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>results_list<span class="ot">=</span>CompoundRSO<span class="sc">::</span><span class="fu">factornames_standardize</span>(<span class="at">design=</span>x_star_stage3,<span class="at">backtransform =</span> <span class="cn">TRUE</span>, <span class="at">colnames_vector =</span> colnames_vector, <span class="at">factor_levels =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>colnames_vector<span class="ot">=</span>results_list<span class="sc">$</span>colnames_vector</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>x_star_stage3<span class="ot">=</span>results_list<span class="sc">$</span>design</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a><span class="co">#input should be a row matrix with column names as X1,...Xn</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>results_list<span class="ot">=</span>CompoundRSO<span class="sc">::</span><span class="fu">factornames_standardize</span>(<span class="at">design=</span><span class="fu">t</span>(beta_stage3),<span class="at">backtransform =</span> <span class="cn">TRUE</span>, <span class="at">colnames_vector =</span> colnames_vector, <span class="at">factor_levels =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>colnames_vector<span class="ot">=</span>results_list<span class="sc">$</span>colnames_vector</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>beta_stage3<span class="ot">=</span>results_list<span class="sc">$</span>design</span></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
