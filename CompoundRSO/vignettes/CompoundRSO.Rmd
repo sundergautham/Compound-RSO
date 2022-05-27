@@ -27,6 +27,9 @@ library(foreach)
 true_me=c("X1","X3","X4","X5","X6","X8","X10","X12")
 true_qe=c("X1*X1","X6*X6","X10*X10")
 true_2FI=c("X1*X3","X4*X5","X5*X6","X8*X10","X10*X12")
+```
+
+```{r, echo=FALSE}
 print("True ME")
 print(true_me)
 print("True QE")
@@ -34,6 +37,7 @@ print(true_qe)
 print("True 2FI")
 print(true_2FI)
 ```
+
 
 * The synthetic test function used is defined as follows:
 ```{r echo = T, results = 'hide'}
@@ -50,10 +54,13 @@ lm_12factor=function(x){
 y_func=function(x,sd=sd_){
   return(lm_12factor(x)+rnorm(n=1,mean=0,sd))
 }
+```
 
+```{r, echo=FALSE}
 print("Location of the optimal solution")
 print("x1=-0.205,x3=1,x4=1,x5=1,x6=-0.65,x8=-1,x10=1,x12=1")
 ```
+
 
 * The number of factors in this example is 12 and the factor sparsity in the experiment is 0.66 with 8 factors active. 
 ```{r echo = T, results = 'hide'}
@@ -156,9 +163,12 @@ for(i in 1:(length(candidate_factors)-1)){
  
 se_names=c("intercept",candidate_factors,se_names,
             as.vector(sapply(candidate_factors,FUN=function(x){paste0(x,"*",x)},simplify = TRUE)))
- 
+```
+
+```{r, echo=FALSE}
 print(se_names)
 ```
+
 
 * Define the type of each factor, "cat" for categorical variable and "cont" for continuous variable. At this point the design strategy is implemented only for continuous experimental factors.
 ```{r echo = T}
@@ -170,9 +180,18 @@ C_dtype=rep("cont",12)
 y=apply(dsd_12factor[,-fake_factor_index],MARGIN=1, FUN=y_func)
 ```
 
-* Carry out model selection for the starting design DSD. The function DSD model selection returns the column names of active main effects, 2FI and QE in te standard notation.
+* Carry out model selection for the starting design DSD. The function DSD model selection returns the column names of active main effects, 2FI and QE in the standard notation.
 ```{r echo = T,eval=FALSE}
 return_list_stage1=dsd_model_selection(design_matrix=dsd_12factor,fake_factor_index=fake_factor_index,C_dtype=C_dtype,heredity="strong",model_selection_type="LASSO",rm_valruns=c(),y) 
+```
+
+An example of the output from the dsd model selection for the lm12factor function.
+
+```{r, echo=FALSE}
+
+load("D:/Final_Results/LM/lack_of_fit_simulations_lm12factor_5centerruns_stage3_final_sn4.RData")
+
+print(return_list_stage1[[1]])
 ```
 
 #####################End of Stage 1 design######################
@@ -201,6 +220,11 @@ colnames(temp)=colnames(return_list_stage2[[1]])
 design_aug=temp
 ```
 
+```{r, echo=FALSE}
+print("Design efficiency table for robust augment")
+print(return_list_stage2[[1]][[4]])
+```
+
 * Carry out the lack-of-fit test for the design chosen in the previous step. If the lack-of-fit test is significant it indicates that the response function is complex and that a second order approximation is inadequate. In this scenario transition to Bayesian Optimization. If the lack of fit test is not significant, it indicates that a second order approximation is sufficient. 
 
 * In the Stage 2 analysis a Gauss-Lasso model is fit (LASSO with AICc for model selection and an OLS model is fit for the identified model). The function "stage2_aug_analysis" returns the lack of fit test results and the model fit. 
@@ -216,6 +240,16 @@ design_aug=rbind(design_aug[1:32,],design_aug[32,,drop=FALSE],design_aug[33:50,]
 y_=c(y,apply(aug_x_mat[33:51,],MARGIN=1,FUN=y_func))
 return_list_stage2_analysis=stage2_aug_analysis(design_matrix=design_aug,y=y_,se_names=se_names,lof_alpha=0.05)
 ```
+
+```{r, echo=FALSE}
+
+print("coefficient of the second-order linear model")
+print(return_list_stage2_analysis[[1]]$beta)
+print("F_stat_lof and F_crit_lof")
+print(paste(return_list_stage2_analysis[[1]]$F_stat_lof, return_list_stage2_analysis[[1]]$F_crit_lof))
+print("Since the F statistic value is less than the F critical value, the second-order approximation is appropriate")
+```
+
 
 #####################End of Stage 2 design######################
 
@@ -290,6 +324,11 @@ print(results_table)
 w_stage3=c(5)
 ```
 
+```{r, echo=FALSE}
+print("Design efficiency table for Adaptive-RSO")
+print(results_table)
+```
+
 
 ```{r, echo=FALSE, results = 'hide', eval=FALSE}
 y_func=function(x,sd=sd_){
@@ -327,6 +366,21 @@ y_best_stage3=return_list[[3]]
 #optional- save the image for later use
 save.image("compoundrso_results.RData")
 ```
+
+```{r, echo=FALSE}
+print("The optimal identified using the Compound-RSO strategy")
+print(x_star_stage3_list[[1]])
+
+print("Location of the optimal solution")
+print("x1=-0.205,x3=1,x4=1,x5=1,x6=-0.65,x8=-1,x10=1,x12=1")
+
+print("Predicted optimal solution using Compound-RSO for the active factors")
+print("x1=-0.186,x3=1,x4=1,x5=1,x6=-0.701 ,x8=-1,x10=1,x12=1")
+
+print("The coefficients of the model identified")
+beta_stage3_list[[1]]
+```
+
  
 * Transforming the design space from [-1,1] to [a,b] and transforming the factor names. 
 ```{r, eval=FALSE}
